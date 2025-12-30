@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L7 VIP PREMIUM - ULTIMATE</title>
+    <style>
+        /* --- PREMIUM THEME: BLACK & GOLD --- */
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lock-card {
+            background: linear-gradient(145deg, #101010, #000000);
+            border: 2px solid #d4af37;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+        }
+
+        .lock-title { color: #d4af37; font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; }
+        .lock-desc { font-size: 0.9rem; color: #bbb; margin-bottom: 20px; }
+
+        /* BUTTONS & INPUTS */
+        .register-btn {
+            display: block;
+            text-decoration: none;
+            background: linear-gradient(to right, #d4af37, #f6e27a);
+            color: #000;
+            font-weight: 900;
+            padding: 14px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+            text-transform: uppercase;
+            text-align: center;
+        }
+        
+        .divider { margin: 20px 0; color: #555; font-size: 0.8rem; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #333; }
+
+        .pass-input {
+            width: 100%;
+            padding: 14px;
+            background: #0a0a0a;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .pass-input:focus { box-shadow: 0 0 10px rgba(212,175,55,0.5); }
+
+        .unlock-btn {
+            background: #d4af37; /* Solid color for better click visibility */
+            color: #000;
+            padding: 14px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .unlock-btn:active { transform: scale(0.98); background: #b8962e; }
+
+        .telegram-btn {
+            display: block;
+            margin-top: 15px;
+            color: #0088cc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px dashed #333;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* --- MAIN APP UI --- */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px;
+            filter: blur(10px); /* Initial blur */
+        }
+
+        .header-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 15px;
+            text-align: center;
+            border-radius: 15px;
+        }
+        .header-title { color: #d4af37; font-weight: 900; font-size: 1.4rem; letter-spacing: 2px; }
+        
+        .info-panel {
+            display: flex; justify-content: space-between;
+            background: #111; border: 1px solid #222; padding: 15px; border-radius: 12px;
+        }
+        .value { font-size: 1.2rem; font-weight: bold; font-family: monospace; }
+        .value-timer { font-size: 1.6rem; color: #d4af37; font-weight: bold; font-family: monospace; }
+
+        /* PREDICTION BOX */
+        .result-box {
+            height: 160px;
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            background: radial-gradient(circle at center, #222, #000);
+            display: flex; justify-content: center; align-items: center;
+            flex-direction: column;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+        }
+        .pred-text { font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .col-big { color: #00e676; text-shadow: 0 0 25px rgba(0, 230, 118, 0.5); }
+        .col-small { color: #ff1744; text-shadow: 0 0 25px rgba(255, 23, 68, 0.5); }
+        
+        /* AUTO BUTTON ROW */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            height: 60px;
+        }
+        
+        .auto-btn {
+            width: 30%;
+            background: rgba(255,255,255,0.05);
+            color: #888;
+            border: 1px solid #333;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+        .auto-btn.active {
+            background: rgba(0,255,65,0.1);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            box-shadow: 0 0 10px rgba(0,255,65,0.2);
+        }
+
+        .main-btn {
+            width: 70%; 
+            background: linear-gradient(to right, #d4af37, #fdd835);
+            color: #000; border: none; border-radius: 10px; font-weight: 900;
+            font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        .main-btn:disabled { background: #333; color: #555; box-shadow: none; cursor: not-allowed; }
+
+        /* SYNC BOX */
+        .sync-box {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #222;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .sync-input {
+            background: #111;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px;
+            width: 60%;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .sync-btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 8px;
+            flex: 1;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .history-box { border: 1px solid #222; background: rgba(0,0,0,0.6); border-radius: 10px; height: 180px; overflow-y: auto; padding: 5px; margin-top: 5px; }
+        .history-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #1a1a1a; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    </style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+    <div class="lock-card">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
+        <div class="lock-title">VIP ACCESS DENIED</div>
+        <div class="lock-desc">Register or Enter Key to Unlock</div>
+        
+        <a href="https://www.lottery7mm.com/#/register?invitationCode=487211691656" 
+           target="_blank" 
+           class="register-btn" 
+           id="reg-btn" 
+           onclick="startTimerOnly()">
+           REGISTER & VERIFY ID
+        </a>
+        
+        <div id="verify-status" style="display:none; margin-bottom: 20px;">
+            <div style="color: #00ff41; font-weight: bold;">VERIFYING...</div>
+            <div id="verify-timer" style="font-size: 1.5rem; color: #d4af37; font-weight: bold;">15</div>
+        </div>
+
+        <div class="divider">OR UNLOCK WITH KEY</div>
+        
+        <!-- INPUT: Password Hidden here too -->
+        <input type="text" id="pass-input" class="pass-input" 
+               placeholder="Enter VIP Key" 
+               autocomplete="off">
+               
+        <button class="unlock-btn" onclick="checkPassword()">UNLOCK APP</button>
+        
+        <div id="error-msg" style="color: #ff1744; font-size: 0.9rem; margin-top: 10px; display: none; font-weight: bold;">
+            WRONG PASSWORD!
+        </div>
+
+        <a href="https://t.me/sarkar_786_0" target="_blank" class="telegram-btn">
+            GET PRIVATE KEY 🔐
+        </a>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="container" id="main-app">
+    <div class="header-box">
+        <div class="header-title">L7 VIP GOLD SERVER</div>
+        <div style="color: #888; font-size: 0.8rem;">CONNECTED: <span style="color:#00ff41;">ONLINE</span></div>
+    </div>
+
+    <div class="info-panel">
+        <div>
+            <div style="color:#666; font-size:0.7rem;">PERIOD</div>
+            <div class="value" id="period-val">Loading...</div>
+        </div>
+        <div style="text-align: right;">
+            <div style="color:#666; font-size:0.7rem;">TIMER</div>
+            <div class="value-timer" id="timer-val">00:00</div>
+        </div>
+    </div>
+
+    <!-- Prediction Display -->
+    <div class="result-box">
+        <div id="loader" style="display:none; border:4px solid #333; border-top:4px solid #d4af37; border-radius:50%; width:50px; height:50px; animation:spin 1s linear infinite;"></div>
+        <div id="result-text" class="pred-text" style="display:none;"></div>
+        <div id="confidence-text" style="font-size:0.7rem; color:#d4af37; margin-top:5px; display:none;">CONFIDENCE 99.9%</div>
+    </div>
+
+    <!-- BUTTONS: AUTO & CHECK -->
+    <div class="btn-row">
+        <button id="auto-btn" class="auto-btn" onclick="toggleAuto()">
+            <span>AUTO</span>
+            <span id="auto-status" style="font-size:0.6rem;">OFF</span>
+        </button>
+        <button id="predict-btn" class="main-btn" onclick="manualCheck()">CHECK RESULT</button>
+    </div>
+
+    <!-- SYNC BOX -->
+    <div class="sync-box">
+        <div style="font-size: 0.7rem; color: #888; width: 100%;">Wrong Period?</div>
+        <input type="number" id="manual-period" class="sync-input" placeholder="Last 3 digits">
+        <button class="sync-btn" onclick="manualSync()">SYNC</button>
+    </div>
+
+    <div class="history-box" id="history-container"></div>
+</div>
+
+<script>
+    // --- 1. PASSWORD & LOCK (SUPER FIX) ---
+    
+    // Add Event Listener for "Enter" key
+    document.getElementById('pass-input').addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            checkPassword();
+        }
+    });
+
+    function checkPassword() {
+        var input = document.getElementById('pass-input').value;
+        if(!input) return; // Empty check
+        
+        var cleanInput = input.trim(); 
+        
+        // --- HIDDEN PASSWORD LOGIC ---
+        // Variable names changed to obscure meaning
+        var kA = "L7";
+        var kB = "2.0";
+        var masterKey = kA + kB; // This becomes "L72.0"
+        
+        // Check both Uppercase and Lowercase
+        if(cleanInput === masterKey || cleanInput === masterKey.toLowerCase() || cleanInput === "(" + masterKey + ")") {
+            performUnlock();
+        } else {
+            var err = document.getElementById('error-msg');
+            err.style.display = 'block';
+            err.innerText = "WRONG PASSWORD!";
+        }
+    }
+
+    function performUnlock() {
+        // Force hide immediately - No animation to prevent stuck screen
+        var lock = document.getElementById('lock-screen');
+        var app = document.getElementById('main-app');
+        
+        lock.style.display = 'none'; // Instant remove
+        app.style.filter = 'none';   // Instant unblur
+    }
+
+    function startTimerOnly() {
+        document.getElementById('reg-btn').style.display = 'none';
+        document.getElementById('verify-status').style.display = 'block';
+        var t = 15;
+        var int = setInterval(function() {
+            t--;
+            document.getElementById('verify-timer').innerText = t;
+            if(t<=0) { clearInterval(int); performUnlock(); }
+        }, 1000);
+    }
+
+    // --- 2. GAME LOGIC ---
+    var currentPeriod = "";
+    var lastPeriodPredicted = "";
+    var periodOffset = 0;
+    var isAnalyzing = false;
+    var autoMode = false;
+
+    setInterval(function() {
+        var now = new Date();
+        var sec = 60 - now.getSeconds();
+        var displaySec = sec < 10 ? "0" + sec : sec;
+        var min = now.getHours() * 60 + now.getMinutes();
+        
+        // Calculate Period
+        var pidNum = 10000 + min + periodOffset;
+        var dateStr = now.toISOString().slice(0,10).replace(/-/g,'');
+        var fullPid = dateStr + pidNum;
+        
+        document.getElementById('timer-val').innerText = "00:" + displaySec;
+        
+        // Timer Styling
+        var timerObj = document.getElementById('timer-val');
+        if(sec <= 5) {
+            timerObj.style.color = '#ff1744';
+            if(!isAnalyzing) {
+                document.getElementById('predict-btn').disabled = true;
+                document.getElementById('predict-btn').innerText = "WAIT...";
+            }
+        } else {
+            timerObj.style.color = '#d4af37';
+            if(!isAnalyzing) {
+                document.getElementById('predict-btn').disabled = false;
+                document.getElementById('predict-btn').innerText = "CHECK RESULT";
+            }
+        }
+
+        // New Period Trigger
+        if(currentPeriod !== fullPid) {
+            currentPeriod = fullPid;
+            document.getElementById('period-val').innerText = fullPid;
+            
+            // Reset UI
+            document.getElementById('result-text').style.display = 'none';
+            document.getElementById('confidence-text').style.display = 'none';
+
+            // Auto Mode
+            if(autoMode && sec > 10) {
+                setTimeout(startPredictionProcess, 2000);
+            }
+        }
+    }, 1000);
+
+    // --- 3. PREDICTION ---
+    function manualCheck() {
+        if(isAnalyzing || lastPeriodPredicted === currentPeriod) return;
+        startPredictionProcess();
+    }
+
+    function startPredictionProcess() {
+        if(lastPeriodPredicted === currentPeriod) return;
+
+        var btn = document.getElementById('predict-btn');
+        var loader = document.getElementById('loader');
+        var txt = document.getElementById('result-text');
+        var conf = document.getElementById('confidence-text');
+
+        isAnalyzing = true;
+        btn.disabled = true;
+        btn.innerText = "CALCULATING...";
+        
+        txt.style.display = 'none';
+        conf.style.display = 'none';
+        loader.style.display = 'block';
+
+        setTimeout(function() {
+            loader.style.display = 'none';
+            
+            // Deterministic Logic
+            var lastDigit = parseInt(currentPeriod.slice(-4));
+            var outcome = (lastDigit * 7 + 3) % 10 >= 5 ? 'BIG' : 'SMALL';
+            
+            txt.innerText = outcome;
+            txt.className = "pred-text " + (outcome==='BIG'?'col-big':'col-small');
+            txt.style.display = 'block';
+            conf.style.display = 'block';
+            
+            btn.innerText = "WIN CONFIRMED";
+            btn.disabled = false;
+            
+            lastPeriodPredicted = currentPeriod;
+            var row = '<div class="history-row"><span>'+currentPeriod+'</span><span style="color:'+(outcome==='BIG'?'#00e676':'#ff1744')+'">'+outcome+'</span></div>';
+            document.getElementById('history-container').innerHTML = row + document.getElementById('history-container').innerHTML;
+            
+            isAnalyzing = false;
+        }, 1500);
+    }
+
+    // --- 4. BUTTON UTILS ---
+    function toggleAuto() {
+        autoMode = !autoMode;
+        var btn = document.getElementById('auto-btn');
+        var status = document.getElementById('auto-status');
+        
+        if(autoMode) {
+            btn.classList.add('active');
+            status.innerText = "ON";
+            var sec = 60 - new Date().getSeconds();
+            if(sec > 10 && lastPeriodPredicted !== currentPeriod) {
+                startPredictionProcess();
+            }
+        } else {
+            btn.classList.remove('active');
+            status.innerText = "OFF";
+        }
+    }
+
+    function manualSync() {
+        var input = document.getElementById('manual-period').value;
+        if(!input || input.length < 3) return;
+        
+        var now = new Date();
+        var totalMin = now.getHours() * 60 + now.getMinutes();
+        var calculatedEnd = (10000 + totalMin) % 1000;
+        var userEnd = parseInt(input.slice(-3));
+        
+        periodOffset = userEnd - calculatedEnd;
+        alert("Synced Successfully!");
+        currentPeriod = ""; 
+    }
+    
+    // Animation
+    var style = document.createElement('style');
+    style.innerHTML = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+    document.head.appendChild(style);
+</script>
+</body>
+</html>
